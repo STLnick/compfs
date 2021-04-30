@@ -7,7 +7,7 @@ OBJ_DIR := obj
 BIN_DIR := bin
 
 # Make sure to change the executable name to the current project!
-EXE := $(BIN_DIR)/statSem
+EXE := $(BIN_DIR)/compfs
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
