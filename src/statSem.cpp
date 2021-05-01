@@ -2,6 +2,7 @@
 // Created by Nick Ray on 4/16/21.
 //
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include "node.hpp"
 #include "statSem.hpp"
@@ -19,7 +20,10 @@ void printErrorAndExit(std::string varName, int line, bool isDuplicateError = tr
     exit(1);
 }
 
-void statSem(node *treeNode, StatSemStack &stack, int level) {
+void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outFile) {
+    /* - - - - - - - - - - - - - - - - - - - */
+    // Handle actions on different node types
+    /* - - - - - - - - - - - - - - - - - - - */
     if (treeNode->label == "block_nt") {
         stack.pushBlock();
     }
@@ -53,22 +57,84 @@ void statSem(node *treeNode, StatSemStack &stack, int level) {
         }
     }
 
+    if (treeNode->label == "stats_nt") {
+        std::cout << "stats_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "stat_nt") {
+        std::cout << "stat_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "mStat_nt") {
+        std::cout << "mStat_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "out_nt") { // WRITE operation
+
+        // WRITE (value after 'outter') AKA value that 'R_nt' resolves to allll the way at the bottom
+        outFile << "WRITE ";
+
+        std::cout << "out_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "expr_nt") {
+        std::cout << "expr_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "N_nt") {
+        std::cout << "N_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "A_nt") {
+        std::cout << "A_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "M_nt") {
+        std::cout << "M_nt node!" << std::endl;
+    }
+
+    if (treeNode->label == "R_nt") {
+        std::cout << "R_nt node --- " << treeNode->tokens[0].stringVal << std::endl;
+
+        if (treeNode->tokens[0].tokenId == ID_tk) {
+            // load variable into ACC instructions
+            // then write it to file
+        } else if (treeNode->tokens[0].tokenId == NUM_tk) {
+            outFile << treeNode->tokens[0].stringVal + "\n";
+        }
+
+        /*
+         * I think I do need to just write to file if I get down here to <R>
+         * <R> can be both an int or an Identifier
+         * So maybe check if the token.tokenId == ID_tk
+         * if (ID_tk) then write to file for instructions to load a variable into ACC
+         * else (should be a NUM_tk then) just load the number into ACC
+         */
+    }
+
+    /* - - - - - - - - - - */
+    // Traverse child nodes
+    /* - - - - - - - - - - */
     if (treeNode->ntOne != NULL) {
-        statSem(treeNode->ntOne, stack, level + 1);
+        statSem(treeNode->ntOne, stack, level + 1, outFile);
     }
 
     if (treeNode->ntTwo != NULL) {
-        statSem(treeNode->ntTwo, stack, level + 1);
+        statSem(treeNode->ntTwo, stack, level + 1, outFile);
     }
 
     if (treeNode->ntThree != NULL) {
-        statSem(treeNode->ntThree, stack, level + 1);
+        statSem(treeNode->ntThree, stack, level + 1, outFile);
     }
 
     if (treeNode->ntFour != NULL) {
-        statSem(treeNode->ntFour, stack, level + 1);
+        statSem(treeNode->ntFour, stack, level + 1, outFile);
     }
 
+
+    /* - - - - - - - - - - - - - - - - - */
+    // Pop statSemStack until end of block
+    /* - - - - - - - - - - - - - - - - - */
     if (treeNode->label == "block_nt") {
         while (stack.getItemsSize() > 0 && stack.isNotOnBlockStop()) {
             stack.pop();

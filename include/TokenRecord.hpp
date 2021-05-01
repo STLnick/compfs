@@ -47,6 +47,7 @@ enum tokenID {
     DATA_tk,
     PROC_tk,
 };
+
 const std::string tokenNames[] = {
         "Identifier",
         "Number",

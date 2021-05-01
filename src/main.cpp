@@ -11,6 +11,7 @@
 #include "node.hpp"
 #include "parseCommandLineOpts.hpp"
 #include "parser.hpp"
+#include "recGen.hpp"
 #include "scanner.hpp"
 #include "statSem.hpp"
 #include "statSemStack.hpp"
@@ -34,6 +35,11 @@ int main(int argc, char **argv) {
     // Validate file to read from
     init(argc, argv, fileNameToRead);
 
+
+    // Setup output file
+    std::string outputFileName = fileNameToRead + ".asm";
+    std::ofstream outputFile(outputFileName.c_str());
+
     // Read file source into string
     fileNameToRead += ".fs";
     std::ifstream srcFile(fileNameToRead.c_str());
@@ -44,7 +50,6 @@ int main(int argc, char **argv) {
     // Scanner + Parser
     /* ------------------------------------ */
     Scanner *scanner = initScanner(srcString);
-    //node *root = NULL;
     node *root = parser(scanner);
     printPreorder(root);
 
@@ -52,16 +57,22 @@ int main(int argc, char **argv) {
     // Static Semantics
     /* ------------------------------------ */
     StatSemStack stack;
-    statSem(root, stack, 0);
+    statSem(root, stack, 0, outputFile);
+
+    // Add last assembly language instruction
+    outputFile << "STOP" << std::endl;
 
     /* ------------------------------------ */
     // Awesome Success Message
     /* ------------------------------------ */
     std::cout << std::endl << getRandomSuccessMessage() << std::endl << std::endl;
 
+    // recGen();
+
     // Free memory
     free(scanner);
     srcFile.close();
+    outputFile.close();
 
     return 0;
 }
