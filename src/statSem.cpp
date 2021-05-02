@@ -118,6 +118,14 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
          * if (ID_tk) then write to file for instructions to load a variable into ACC
          * else (should be a NUM_tk then) just load the number into ACC
          */
+    if (treeNode->label == "assign_nt") {
+        std::cout << "assign_nt node!" << std::endl;
+        std::cout << "assign_nt size(): " << treeNode->tokens.size() << std::endl;
+        for (int i = 0; i < treeNode->tokens.size(); i++) {
+            std::cout << treeNode->tokens[i].stringVal << std::endl;
+        }
+        outFile << "LOAD ";
+    }
     }
 
     /* - - - - - - - - - - */
@@ -139,6 +147,13 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
         statSem(treeNode->ntFour, stack, level + 1, outFile);
     }
 
+    /* - - - - - - - - - - - - - - - - - */
+    // Post processing for certain nodes
+    /* - - - - - - - - - - - - - - - - - */
+
+    if (treeNode->label == "assign_nt") {
+        outFile << "STORE " << treeNode->tokens[1].stringVal << "\n";
+    }
 
     /* - - - - - - - - - - - - - - - - - */
     // Pop statSemStack until end of block
