@@ -26,8 +26,11 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     /* - - - - - - - - - - - - - - - - - - - */
     if (treeNode->label == "block_nt") {
         stack.pushBlock();
+        // TODO: Determine the construct needed in VirtMach to delineate a _block_
+        // TODO: i.e. how to establish a scope for variables essentially (?) - think through this more prolly
     }
 
+    // Add variables to static semantic stack if in vars node
     if (treeNode->label == "vars_nt") {
         int declaredLineNum = stack.find(treeNode->tokens[1].stringVal);
 
@@ -66,14 +69,17 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
     if (treeNode->label == "stats_nt") {
         std::cout << "stats_nt node!" << std::endl;
+        // TODO: Handle ( <stat> <mStat> ) production (?)
     }
 
     if (treeNode->label == "stat_nt") {
         std::cout << "stat_nt node!" << std::endl;
+        // TODO: Handle ( <in> ; <out> ; <block> ; <if> ; <loop> ; <assign> ; <goto> ; <label> ; ) productions (?)
     }
 
     if (treeNode->label == "mStat_nt") {
         std::cout << "mStat_nt node!" << std::endl;
+        // TODO: Handle ( <stat> <mStat> ) production (?)
     }
 
     if (treeNode->label == "out_nt") { // WRITE operation
@@ -86,18 +92,27 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
     if (treeNode->label == "expr_nt") {
         std::cout << "expr_nt node!" << std::endl;
+        // TODO: Handle ( <N> - <expr> ) production
+        // TODO: Handle ( <N> ) production (?)
     }
 
     if (treeNode->label == "N_nt") {
         std::cout << "N_nt node!" << std::endl;
+        // TODO: Handle ( <A> / <N> ) production
+        // TODO: Handle ( <A> * <N> ) production
+        // TODO: Handle ( <A> ) production (?)
     }
 
     if (treeNode->label == "A_nt") {
         std::cout << "A_nt node!" << std::endl;
+        // TODO: Handle ( <M> + <A> ) production
+        // TODO: Handle ( <M> ) production (?)
     }
 
     if (treeNode->label == "M_nt") {
         std::cout << "M_nt node!" << std::endl;
+        // TODO: Handle ( *<M> ) production
+        // TODO: Handle ( <R> ) production (?)
     }
 
     if (treeNode->label == "R_nt") {
@@ -111,13 +126,16 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
     }
 
-        /*
-         * I think I do need to just write to file if I get down here to <R>
-         * <R> can be both an int or an Identifier
-         * So maybe check if the token.tokenId == ID_tk
-         * if (ID_tk) then write to file for instructions to load a variable into ACC
-         * else (should be a NUM_tk then) just load the number into ACC
-         */
+    if (treeNode->label == "if_nt") {
+        std::cout << "if_nt node!" << std::endl;
+        // TODO:
+    }
+
+    if (treeNode->label == "loop_nt") {
+        std::cout << "loop_nt node!" << std::endl;
+        // TODO:
+    }
+
     if (treeNode->label == "assign_nt") {
         std::cout << "assign_nt node!" << std::endl;
         std::cout << "assign_nt size(): " << treeNode->tokens.size() << std::endl;
@@ -126,6 +144,20 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
         }
         outFile << "LOAD ";
     }
+
+    if (treeNode->label == "R0_nt") {
+        std::cout << "R0_nt node!" << std::endl;
+        // TODO:
+    }
+
+    if (treeNode->label == "label_nt") {
+        std::cout << "label_nt node!" << std::endl;
+        // TODO:
+    }
+
+    if (treeNode->label == "goto_nt") {
+        std::cout << "goto_nt node!" << std::endl;
+        // TODO:
     }
 
     /* - - - - - - - - - - */

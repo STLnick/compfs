@@ -35,7 +35,6 @@ int main(int argc, char **argv) {
     // Validate file to read from
     init(argc, argv, fileNameToRead);
 
-
     // Setup output file
     std::string outputFileName = fileNameToRead + ".asm";
     std::ofstream outputFile(outputFileName.c_str());
