@@ -47,12 +47,8 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
         stack.push(newItem);
 
-
-        // TODO: Write to file!
-        outFile << "LOAD " << treeNode->tokens[3].stringVal << "\n";
-        outFile << "STORE " << treeNode->tokens[1].stringVal << "\n";
-
-
+        outFile << "LOAD " << treeNode->tokens[3].stringVal << std::endl;
+        outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
     } else { // Check that all ID_tk's used have been declared in all other nodes
         int found = 1;
         int i;
@@ -87,7 +83,7 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     }
 
     if (treeNode->label == "in_nt") { // READ operation
-        outFile << "READ " << treeNode->tokens[1].stringVal << "\n";
+        outFile << "READ " << treeNode->tokens[1].stringVal << std::endl;
     }
 
     if (treeNode->label == "expr_nt") {
@@ -116,10 +112,8 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     }
 
     if (treeNode->label == "R_nt") {
-        std::cout << "R_nt node --- " << treeNode->tokens[0].stringVal << std::endl;
-
         if (treeNode->tokens[0].tokenId == ID_tk || treeNode->tokens[0].tokenId == NUM_tk) {
-            outFile << treeNode->tokens[0].stringVal << "\n";
+            outFile << treeNode->tokens[0].stringVal << std::endl;
         }
 
         // TODO: Handle ( <expr> ) production
@@ -137,11 +131,6 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     }
 
     if (treeNode->label == "assign_nt") {
-        std::cout << "assign_nt node!" << std::endl;
-        std::cout << "assign_nt size(): " << treeNode->tokens.size() << std::endl;
-        for (int i = 0; i < treeNode->tokens.size(); i++) {
-            std::cout << treeNode->tokens[i].stringVal << std::endl;
-        }
         outFile << "LOAD ";
     }
 
@@ -184,7 +173,7 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     /* - - - - - - - - - - - - - - - - - */
 
     if (treeNode->label == "assign_nt") {
-        outFile << "STORE " << treeNode->tokens[1].stringVal << "\n";
+        outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
     }
 
     /* - - - - - - - - - - - - - - - - - */

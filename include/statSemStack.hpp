@@ -10,6 +10,7 @@
 class StatSemStack {
 private:
     std::vector<StatSemStackItem*> items;
+    std::vector<std::string> variableNames;
 public:
     StatSemStack();
     void push(StatSemStackItem *newItem);
@@ -18,6 +19,8 @@ public:
     int find(std::string bufferName);
     bool isNotOnBlockStop();
     int getItemsSize();
+    int getVariablesNamesSize();
+    std::string getVariableName(int index);
 };
 
 #endif //STATSEM_STATSEMSTACK_HPP

@@ -11,7 +11,6 @@
 #include "node.hpp"
 #include "parseCommandLineOpts.hpp"
 #include "parser.hpp"
-#include "recGen.hpp"
 #include "scanner.hpp"
 #include "statSem.hpp"
 #include "statSemStack.hpp"
@@ -61,12 +60,15 @@ int main(int argc, char **argv) {
     // Add last assembly language instruction
     outputFile << "STOP" << std::endl;
 
+    // Add variable declarators
+    for (int i = 0; i < stack.getVariablesNamesSize(); i++) {
+        outputFile << stack.getVariableName(i) << " 0" << std::endl;
+    }
+
     /* ------------------------------------ */
     // Awesome Success Message
     /* ------------------------------------ */
     std::cout << std::endl << getRandomSuccessMessage() << std::endl << std::endl;
-
-    // recGen();
 
     // Free memory
     free(scanner);

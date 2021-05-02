@@ -11,6 +11,9 @@ StatSemStack::StatSemStack() {}
 
 void StatSemStack::push(StatSemStackItem *newItem) {
     items.push_back(newItem);
+    if ("BLOCK_STOP" != newItem->name) {
+        variableNames.push_back(newItem->name);
+    }
 }
 
 void StatSemStack::pushBlock() {
@@ -45,3 +48,12 @@ bool StatSemStack::isNotOnBlockStop() {
 int StatSemStack::getItemsSize() {
     return items.size();
 }
+
+int StatSemStack::getVariablesNamesSize() {
+    return variableNames.size();
+}
+
+std::string StatSemStack::getVariableName(int index) {
+    return variableNames[index];
+}
+
