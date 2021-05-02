@@ -43,7 +43,14 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
             );
 
         stack.push(newItem);
-    } else { // Check that all ID_tk's used have been declared
+
+
+        // TODO: Write to file!
+        outFile << "LOAD " << treeNode->tokens[3].stringVal << "\n";
+        outFile << "STORE " << treeNode->tokens[1].stringVal << "\n";
+
+
+    } else { // Check that all ID_tk's used have been declared in all other nodes
         int found = 1;
         int i;
 
@@ -70,11 +77,11 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     }
 
     if (treeNode->label == "out_nt") { // WRITE operation
-
-        // WRITE (value after 'outter') AKA value that 'R_nt' resolves to allll the way at the bottom
         outFile << "WRITE ";
+    }
 
-        std::cout << "out_nt node!" << std::endl;
+    if (treeNode->label == "in_nt") { // READ operation
+        outFile << "READ " << treeNode->tokens[1].stringVal << "\n";
     }
 
     if (treeNode->label == "expr_nt") {
@@ -96,12 +103,13 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
     if (treeNode->label == "R_nt") {
         std::cout << "R_nt node --- " << treeNode->tokens[0].stringVal << std::endl;
 
-        if (treeNode->tokens[0].tokenId == ID_tk) {
-            // load variable into ACC instructions
-            // then write it to file
-        } else if (treeNode->tokens[0].tokenId == NUM_tk) {
-            outFile << treeNode->tokens[0].stringVal + "\n";
+        if (treeNode->tokens[0].tokenId == ID_tk || treeNode->tokens[0].tokenId == NUM_tk) {
+            outFile << treeNode->tokens[0].stringVal << "\n";
         }
+
+        // TODO: Handle ( <expr> ) production
+
+    }
 
         /*
          * I think I do need to just write to file if I get down here to <R>
