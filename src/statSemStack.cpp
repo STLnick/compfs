@@ -31,8 +31,8 @@ void StatSemStack::pushBlock() {
     StatSemStackItem* block = new StatSemStackItem(
             "BLOCK_STOP",
             -1,
-            -1
-    );
+            -1,
+            -1);
     this->push(block);
 }
 
@@ -45,11 +45,23 @@ int StatSemStack::find(std::string bufferName) {
 
     for (; iter != items.end(); ++iter) {
         if (bufferName == (*iter)->name) {
+            return (*iter)->stackIndex;
+        }
+    }
+
+    return -99; // Error
+}
+
+int StatSemStack::findAndReturnLineNum(std::string bufferName) {
+    std::vector<StatSemStackItem*>::iterator iter = items.begin();
+
+    for (; iter != items.end(); ++iter) {
+        if (bufferName == (*iter)->name) {
             return (*iter)->lineNum;
         }
     }
 
-    return -1;
+    return -1; // Error
 }
 
 bool StatSemStack::isNotOnBlockStop() {

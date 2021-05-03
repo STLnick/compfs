@@ -21,6 +21,7 @@ public:
     void pushBlock();
     void pop();
     int find(std::string bufferName);
+    int findAndReturnLineNum(std::string bufferName);
     bool isNotOnBlockStop();
     int getItemsSize();
     int getVariablesNamesSize();
