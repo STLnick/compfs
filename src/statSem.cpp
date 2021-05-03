@@ -134,7 +134,8 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
             outFile << "LOAD " << treeNode->tokens[3].stringVal << std::endl;
             outFile << "PUSH" << std::endl;
-            outFile << "STACKW " << stackIndex++ << std::endl;
+            outFile << "STACKW 0" << std::endl;
+            stackIndex++;
         }
 
         processInorder(treeNode, stack, level + 1, outFile);
