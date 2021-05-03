@@ -202,12 +202,15 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
         outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
     }
 
+
+
     /* - - - - - - - - - - - - - - - - - */
     // Pop statSemStack until end of block
     /* - - - - - - - - - - - - - - - - - */
     if (treeNode->label == "block_nt") {
         while (stack.getItemsSize() > 0 && stack.isNotOnBlockStop()) {
             stack.pop();
+            outFile << "POP" << std::endl;
         }
         stack.pop(); // Remove BLOCK_STOP fake item
     }
