@@ -9,6 +9,21 @@
 #include "statSemStack.hpp"
 #include "statSemStackItem.hpp"
 
+static int varFound = 1;
+static int checkIndex;
+static int labelCounter = 0; /* counting unique labels generated */
+static int varCounter = 0; /* counting unique temporaries generated */
+typedef enum {VAR, LABEL} nameType;
+static char newName[20]; /* for creation of unique names */
+
+static char *getNewName(nameType type) {
+    if (type == VAR) // creating new temporary
+        sprintf(newName, "T%d" , varCounter++); /* generate a new label as T0, T1, etc */
+    else // creating new Label
+        sprintf(newName, "L%d" , labelCounter++); /* new labels as L0, L1, etc */
+    return(newName);
+}
+
 // dup error by default --- not declared error will require 3rd arg of 1
 void printErrorAndExit(std::string varName, int line, bool isDuplicateError = true) {
     if (isDuplicateError) {
