@@ -11,9 +11,13 @@ class StatSemStack {
 private:
     std::vector<StatSemStackItem*> items;
     std::vector<std::string> variableNames;
+    bool isGlobal;
 public:
     StatSemStack();
+    bool getIsGlobal();
+    void setIsGlobal(bool val);
     void push(StatSemStackItem *newItem);
+    void pushVarName(std::string name);
     void pushBlock();
     void pop();
     int find(std::string bufferName);

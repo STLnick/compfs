@@ -21,6 +21,9 @@ void printErrorAndExit(std::string varName, int line, bool isDuplicateError = tr
 }
 
 void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outFile) {
+            if (!stack.getIsGlobal()){
+                stack.setIsGlobal(true);
+            }
     /* - - - - - - - - - - - - - - - - - - - */
     // Handle actions on different node types
     /* - - - - - - - - - - - - - - - - - - - */
@@ -47,6 +50,13 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
 
         stack.push(newItem);
 
+        if (stack.getIsGlobal()) {
+            stack.pushVarName(treeNode->tokens[1].stringVal);
+            outFile << "LOAD " << treeNode->tokens[3].stringVal << std::endl;
+            outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
+        } else {
+            outFile << "PUSH" << std::endl;
+        }
         outFile << "LOAD " << treeNode->tokens[3].stringVal << std::endl;
         outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
     } else { // Check that all ID_tk's used have been declared in all other nodes

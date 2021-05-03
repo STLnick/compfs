@@ -7,13 +7,24 @@
 #include "statSem.hpp"
 #include "statSemStack.hpp"
 
-StatSemStack::StatSemStack() {}
+StatSemStack::StatSemStack() {
+    this->isGlobal = true;
+}
+
+bool StatSemStack::getIsGlobal() {
+    return isGlobal;
+}
+
+void StatSemStack::setIsGlobal(bool val) {
+    isGlobal = val;
+}
 
 void StatSemStack::push(StatSemStackItem *newItem) {
     items.push_back(newItem);
-    if ("BLOCK_STOP" != newItem->name) {
-        variableNames.push_back(newItem->name);
-    }
+}
+
+void StatSemStack::pushVarName(std::string name) {
+    variableNames.push_back(name);
 }
 
 void StatSemStack::pushBlock() {
