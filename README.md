@@ -33,37 +33,55 @@ Cloned from [parser](https://github.com/STLnick/compfs) to get all of that code 
 
 TODO: Maybe replace examples??
 
-### Simple example of a valid, parsable program
-`p2g1.fs` of provided test files
-
+### Custom test files that were tested and worked:
 ```
-$$ p3g1 $$
-data x := 5 ;
+$$ Prints '1' & '2' if x and '*4' are opposite signs (true in its current form) $$
+data x := 4 ;
 main
 begin
-data y := 67 ;
-outter y ;
-assign x := y ;
+data a := 3 ;
+if [ x % *4 ] then proc a ; ;
+outter 1 ;
+void a ;
+outter 2 ;
 end
 ```
-
-### Complex example of a valid, parsable program
-`p2g6.fs` of provided test files
-
 ```
-$$ p3g2 $$
-data z := 321 ;
-data y := 567 ;
+data x := 4 ;
 main
 begin
-data x := 5 ;
-loop [ y => z ]
+loop [ x => 2 ]
+    begin
+    outter x ;
+    assign x := x - 1 ;
+    end ;
+outter 100 ;
+end
+```
+```
+data y := 5 ;
+main
+begin
+data x := 555 ;
+loop [ y => 1 ]
   begin
-  data c := 3 ;
-     begin
-     proc c ; 
-     end
+  data c := 4 ;
+  assign y := y - 1 ;
+  outter y ;
   end ;
+outter x ;
+end
+```
+```
+data y := 5 ;
+data c := 0 ;
+main
+begin
+data x := 555 ;
+void c ;
+assign y := y - 2 ;
+outter y ;
+if [ y => 2 ] then proc c ; ;
 outter x ;
 end
 ```
@@ -71,13 +89,17 @@ end
 ### Semantics
 Essentially following the rules of `C` for semantic rules.
 
-
 ---
 
 **What Works**:
+- Generates code properly
+- Uses stack for variables that aren't in global scope
+- Respects order of operations
+- Any global or temporary variables generated are initialized below STOP instruction
 
 **What Doesn't Work**:
-- We'll find out...
+- Not sure if this was something I messed up, however, you cannot define a variable as a negative number
+    - Negatives are still handled fine by the VirtMach and generated code, simply no negative definitions (or use * to achieve)
 
 ---
 ### Commit Log
