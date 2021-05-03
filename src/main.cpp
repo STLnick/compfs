@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     /* ------------------------------------ */
     Scanner *scanner = initScanner(srcString);
     node *root = parser(scanner);
-    printPreorder(root);
+    //printPreorder(root);
 
     /* ------------------------------------ */
     // Static Semantics
@@ -65,10 +65,13 @@ int main(int argc, char **argv) {
         outputFile << stack.getVariableName(i) << " 0" << std::endl;
     }
 
+    // Output generated file name
+    std::cout << "File generated: " << outputFileName << std::endl;
+
     /* ------------------------------------ */
     // Awesome Success Message
     /* ------------------------------------ */
-    std::cout << std::endl << getRandomSuccessMessage() << std::endl << std::endl;
+    //std::cout << std::endl << getRandomSuccessMessage() << std::endl << std::endl;
 
     // Free memory
     free(scanner);
