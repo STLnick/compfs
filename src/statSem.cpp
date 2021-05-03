@@ -20,6 +20,19 @@ void printErrorAndExit(std::string varName, int line, bool isDuplicateError = tr
     exit(1);
 }
 
+void checkVariablesWereDeclared(node *treeNode, StatSemStack &stack) {
+    varFound = 1;
+
+    for (checkIndex = 0; checkIndex < treeNode->tokens.size(); checkIndex++) {
+        if (treeNode->tokens[checkIndex].tokenId == ID_tk) {
+            varFound = stack.find(treeNode->tokens[checkIndex].stringVal);
+            if (varFound == -1) {
+                printErrorAndExit(treeNode->tokens[checkIndex].stringVal, treeNode->tokens[checkIndex].lineNum, false);
+            }
+        }
+    }
+}
+
 void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outFile) {
             if (!stack.getIsGlobal()){
                 stack.setIsGlobal(true);
@@ -57,20 +70,8 @@ void statSem(node *treeNode, StatSemStack &stack, int level, std::ofstream &outF
         } else {
             outFile << "PUSH" << std::endl;
         }
-        outFile << "LOAD " << treeNode->tokens[3].stringVal << std::endl;
-        outFile << "STORE " << treeNode->tokens[1].stringVal << std::endl;
     } else { // Check that all ID_tk's used have been declared in all other nodes
-        int found = 1;
-        int i;
-
-        for (i = 0; i < treeNode->tokens.size(); i++) {
-            if (treeNode->tokens[i].tokenId == ID_tk) {
-                found = stack.find(treeNode->tokens[i].stringVal);
-                if (found == -1) {
-                    printErrorAndExit(treeNode->tokens[i].stringVal, treeNode->tokens[i].lineNum, false);
-                }
-            }
-        }
+        checkVariablesWereDeclared(treeNode, stack);
     }
 
     if (treeNode->label == "stats_nt") {
